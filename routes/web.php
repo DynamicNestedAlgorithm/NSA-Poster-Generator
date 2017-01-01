@@ -29,3 +29,7 @@ Route::get('/step2', 'PostersController@textOverlay')->name('poster.textOverlay'
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
