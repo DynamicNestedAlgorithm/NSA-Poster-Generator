@@ -15,6 +15,8 @@ class CreateFramesTable extends Migration
     {
         Schema::create('frames', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('frame');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class frame extends Model
 {
-    protected $fillable = ['file'];
+    protected $fillable = ['frame'];
    
     use SoftDeletes;
     public function getFilePath()

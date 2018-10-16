@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Poster extends Model
 {
-    protected $fillable = ['file'];
+    protected $fillable = ['poster'];
    
     use SoftDeletes;
     public function getFilePath()

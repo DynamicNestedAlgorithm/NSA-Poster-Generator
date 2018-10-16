@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
+
 use Storage;
+use App\Poster;
+use App\Frame;
 
 class PostersController extends Controller
 {
@@ -13,10 +16,11 @@ class PostersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
 
-       
+        return view('poster.index');
 
     }
 
@@ -30,7 +34,11 @@ class PostersController extends Controller
         return view('poster.create');
         
     }
-
+    public function textOverlay()
+    {
+        return view('poster.overlay');
+        
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -39,49 +47,22 @@ class PostersController extends Controller
      */
     public function store(Request $request)
     {
-         // configure with favored image driver (gd by default)
-        // $pic = Image::make(storage_path('uploads/'. $new_name'))
-        if($request->hasFile('img')) {
+        $this->validate($request, [
+            'img'   => 'required',
+        ]);
+       $file = $request->file('img');
+       //   $file = $request->file('img')->store('public/files');
+       $img = Image::make($file)->fit(1096,1096);
+     
+       // paste another image 
+       $frame = Frame::latest()->value('frame');
 
-            if($request->file('img')->isValid()) {
-        
-                $types = array('_original.', '_32.', '_64.', '_128.'); 
-        
-                $sizes = array( array('32','32'), array('64','64'), array('128','128'));
-                $targetPath = '/Users/Ahmad/Desktop/NSA Poster Generator/public/uploads/';
-        
-            try {
-                $file = $request->file('img');
-                $file = $request->file('frame');
-                $ext = $file->getClientOriginalExtension();
-                $fName = time();
-                $o_name = $fName . array_shift($types) . $ext;
-                $original = Image::make($file->getRealPath());
-                $original->save($targetPath . $o_name);
-        
-                                
-                // paste another image
-                $img->insert($file->getRealPath());
-
-                // create a new Image instance for inserting
-                $frame = Image::make($file->getRealPath());
-                $img->insert($frame, 'center');
-
-                // insert poster at bottom-right corner with 10px offset
-                // $img->insert('public/poster.png', 'bottom-right', 10, 10);
-
-                return $img->response('jpg');
-        
-            } 
-             catch (Illuminate\Filesystem\FileNotFoundException $e) {
-        
-            }
-          }
-        }
-
-        // return $img->response('jpg');
-
-
+      $theFrame = Storage::get($frame);
+      
+      $img->insert($theFrame);
+        return $img->response('jpg');
+ 
+   
     }
 
     /**

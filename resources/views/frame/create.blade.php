@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('stylesheet')
-    <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
 @endsection
     @section('content')
     <div class="container">
     <br><br>
-                         <div class="card">
-                                <div class="card-header the-header">
-                                       Upload Frame</b>        
+                         <div class="the-card">
+                                <div class="">
+                                   <h3> Upload Frame</h3>        
                                 </div>
                                 <div class="container card-body">
                                    <form action="{{ route('frame.store') }}" method="post"  enctype="multipart/form-data">
-                                        @csrf
-   
-                                        <input type="file" name="frame" class="form-control" >
-                                       <br><br>
-                                       <input type="submit" value="Upload" class="btn btn-info btn-md">
+                                    @csrf   
+                                        <input type="file" name="frame" value="" class="form-control" required>
+                                       <p>Files should be less than 2MB</p>
+                                       <br>
+                                       <input type="submit" value="Upload" class="btn btn-success btn-lg">
                                    </form>
                             </div>
                         </div> 

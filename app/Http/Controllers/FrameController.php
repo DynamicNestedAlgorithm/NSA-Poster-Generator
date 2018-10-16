@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Storage;
+use App\Frame;
 
 class FrameController extends Controller
 {
@@ -12,6 +13,10 @@ class FrameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         //
@@ -36,18 +41,19 @@ class FrameController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             'frame'   => 'required',
         ]);
        
-    //   $created_by = Auth::user()->email;
-      $file = $request->file('frame')->store('public/frame');
+      $file = $request->file('frame')->store('public/files');
         
-      Project::updateOrCreate([
-          'frame' => $file,
+      Frame::updateOrCreate([
+            'frame' => $file,
       ]);
-        return redirect('/posters')->with('Awesome!, Frame Uploaded! :)');
+        return redirect('/posters')->with('Awesome!, Frame Created! :)');
     
+
     }
 
     /**
